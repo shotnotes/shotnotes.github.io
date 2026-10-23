@@ -1,0 +1,560 @@
+/* The faces, DejaVu Sans and DejaVu Sans Mono (a free licence; see
+   fonts/LICENSE_DEJAVU), so the site looks the same on every device. Latin
+   subsets. Each has a regular and a bold weight only, so ask for 400 or 700. */
+@font-face {
+  font-family: "DejaVu Sans";
+  src: url("fonts/DejaVuSans.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DejaVu Sans";
+  src: url("fonts/DejaVuSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("fonts/DejaVuSansMono.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("fonts/DejaVuSansMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Colours and fonts. The site overrides any of these from [extra.colours] and
+   [extra.fonts] in its config.toml; see the README. */
+:root {
+  --background: #f1f0ec;
+  --ink: #1a1a1a;
+  --muted: #6b6b68;
+  --divider: #d9d8d2;
+  --accent: #E20612;
+  --mono: "DejaVu Sans Mono", "Courier New", monospace;
+  --sans: "DejaVu Sans", Verdana, sans-serif;
+
+  /* The space between columns, and above and below each section. */
+  --gutter: clamp(0.5rem, 2vw, 2rem);
+  --section-space: clamp(3.5rem, 9vw, 7.5rem);
+}
+
+* { box-sizing: border-box; }
+/* Every size below is in rem, so this one line scales the whole page: 81% of
+   the reader's own default size on a phone, rising to 100% by desktop width. */
+html {
+  font-size: clamp(81.25%, 73% + 0.34vw, 100%);
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--ink);
+  font: 1.5rem/1.55 var(--sans);
+}
+
+a { color: var(--accent); text-underline-offset: 0.2em; }
+img { display: block; max-width: 100%; height: auto; }
+
+/* The page is twelve equal columns across its whole width. Everything sits in
+   columns 2 to 11; columns 1 and 12 are the margins. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+.grid > * { grid-column: 2 / 12; }
+
+/* Header and footer */
+.bar .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.bar .name {
+  color: var(--ink);
+  font: 700 1.25rem var(--mono);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* The logo is 3:2. It changes with the system scheme on its own; when the
+   footer switch overrides the system, invert it instead. */
+.bar .name { display: inline-flex; }
+.logo { display: block; height: 6rem; width: auto; }
+:root:has(#scheme-switch:checked) .logo { filter: invert(1) hue-rotate(180deg); }
+
+.bar .row { position: relative; }
+.bar nav a { text-decoration: none; }
+.bar nav a:hover { color: var(--ink); }
+
+/* On a wide screen the items sit in a line, with a centre dot between them. */
+.bar .inline { display: none; }
+.bar .dot { margin-inline: 0.75em; color: var(--muted); }
+
+/* On a narrow screen, a menu button opens them. */
+.menu summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -0.75rem -0.5rem -0.75rem 0;
+  padding-inline: 0.5rem;
+  cursor: pointer;
+  list-style: none;
+}
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary span {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  transition: transform 0.15s, opacity 0.15s;
+}
+.menu[open] summary span:nth-child(1) { transform: translateY(calc(0.3rem + 2px)) rotate(45deg); }
+.menu[open] summary span:nth-child(2) { opacity: 0; }
+.menu[open] summary span:nth-child(3) { transform: translateY(calc(-0.3rem - 2px)) rotate(-45deg); }
+.menu summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.menu nav {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+  min-width: 14rem;
+  background: var(--background);
+  border: 1px solid var(--divider);
+}
+.menu nav a { display: block; padding: 1rem 1.25rem; }
+.menu nav a + a { border-top: 1px solid var(--divider); }
+
+@media (min-width: 48rem) {
+  .bar .inline { display: block; }
+  .menu { display: none; }
+}
+
+footer .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--divider);
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+footer .row p { margin: 0; }
+
+/* The light/dark switch: a hidden checkbox and a label drawn as an icon, the
+   moon on a light page (to go dark) and the sun on a dark one. */
+#scheme-switch { position: absolute; opacity: 0; pointer-events: none; }
+.scheme-switch {
+  display: flex;
+  padding: 0.5rem;
+  margin: -0.5rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+.scheme-switch svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.scheme-switch .sun { display: none; }
+#scheme-switch:focus-visible + .scheme-switch { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+  .scheme-switch .moon { display: none; }
+  .scheme-switch .sun { display: block; }
+  :root:has(#scheme-switch:checked) .scheme-switch .moon { display: block; }
+  :root:has(#scheme-switch:checked) .scheme-switch .sun { display: none; }
+}
+@media (prefers-color-scheme: light) {
+  :root:has(#scheme-switch:checked) .scheme-switch .moon { display: none; }
+  :root:has(#scheme-switch:checked) .scheme-switch .sun { display: block; }
+}
+
+/* Hero */
+.hero { padding: var(--section-space) 0 calc(var(--section-space) * 0.6); }
+.hero .text { grid-column: 2 / 12; }
+.hero h1 { max-width: none; }
+
+/* The eyebrow, the status line and the navigation share one style. */
+.eyebrow, .status, .bar nav a {
+  color: var(--muted);
+  font: 1.15rem var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0.5rem 0 1rem;
+  max-width: 20ch;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.lead { margin: 0 0 1.5rem; font-size: 1.85rem; }
+
+h2 {
+  margin: 0 0 1rem;
+  color: var(--accent);
+  font: 700 1.2rem var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+ul { padding-left: 1.2rem; }
+li { margin-bottom: 0.5rem; }
+
+/* A section: a divider, the same space above and below every one, a title,
+   and the columns its content is split into. */
+.section { padding-bottom: var(--section-space); }
+.section::before {
+  content: "";
+  grid-column: 2 / 12;
+  margin-bottom: var(--section-space);
+  border-top: 1px solid var(--divider);
+}
+
+/* Columns lay their parts out on the page grid: the same twelve tracks and
+   gutter as the page, so the parts fall on its column lines. The first part
+   starts in column 2; each takes --span columns. Phones stack them. */
+.columns {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: 2rem;
+}
+.column { grid-column: 2 / 12; min-width: 0; }
+.column > :first-child { margin-top: 0; }
+.column > :last-child { margin-bottom: 0; }
+/* Running text in a column is justified; the components inside (plans, the
+   faq) keep their own alignment. */
+.column > p { text-align: justify; hyphens: auto; }
+.columns-center { align-items: center; }
+.columns-start { align-items: start; }
+.columns-end { align-items: end; }
+
+@media (min-width: 48rem) {
+  .column { grid-column: span var(--span); }
+  .column:first-child { grid-column: 2 / span var(--span); }
+}
+
+/* A picture */
+.figure { margin: 0; }
+.figure img {
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+.figure figcaption {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font: 1.1rem var(--mono);
+  text-align: center;
+}
+
+/* A line drawing on a light ground, such as an SVG, taken into the page's own
+   colours without editing the file. Light: the picture's off-white is lifted
+   to white and multiplied with the page, so it becomes the page colour and the
+   lines stay dark. Dark: the picture is inverted (hue kept) and lightened
+   against the page, so its dark ground gives way to the page colour and the
+   lines turn light. Not for photographs. */
+.figure-adapt img {
+  filter: brightness(1.035);
+  mix-blend-mode: multiply;
+}
+@media (prefers-color-scheme: dark) {
+  .figure-adapt img {
+    filter: invert(1) hue-rotate(180deg);
+    mix-blend-mode: lighten;
+  }
+  :root:has(#scheme-switch:checked) .figure-adapt img {
+    filter: brightness(1.035);
+    mix-blend-mode: multiply;
+  }
+}
+@media (prefers-color-scheme: light) {
+  :root:has(#scheme-switch:checked) .figure-adapt img {
+    filter: invert(1) hue-rotate(180deg);
+    mix-blend-mode: lighten;
+  }
+}
+
+/* Plain pages */
+.page { padding: 3rem 0; }
+.page .text { grid-column: 2 / 10; }
+
+/* Plans side by side (the price_comparison component). Each tab is a hidden
+   radio, its label and a panel, in a wrapper that takes no box of its own, so
+   the labels line up in one row above the panels; a checked radio shows its
+   panel. */
+.pricing {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem 0;
+  margin-top: 2rem;
+}
+.pricing-tab { display: contents; }
+.pricing-radio { position: absolute; opacity: 0; pointer-events: none; }
+.pricing-tab label {
+  order: 1;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--divider);
+  color: var(--muted);
+  font: 1.15rem var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pricing-tab:first-child label { border-right-width: 0; }
+.pricing-radio:checked + label {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--background);
+}
+.pricing-radio:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pricing-panel { display: none; order: 2; flex: 0 0 100%; }
+.pricing-radio:checked + label + .pricing-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gutter);
+}
+@media (min-width: 48rem) {
+  .pricing-radio:checked + label + .pricing-panel { grid-template-columns: 1fr 1fr; }
+}
+
+.plan {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border: 1px solid var(--divider);
+}
+.plan h3 {
+  margin: 0 0 1.5rem;
+  font: 700 1.2rem var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.plan .price { margin: 0; }
+.plan .amount { font-size: 3.5rem; line-height: 1.1; letter-spacing: -0.02em; }
+.plan .period, .plan-note, .footnote {
+  color: var(--muted);
+  font: 1.1rem var(--mono);
+}
+.plan-note { margin: 0.5rem 0 0; }
+.plan-button {
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.5rem;
+  border: 1px solid var(--divider);
+  background: var(--divider);
+  color: var(--muted);
+  font: 1.15rem var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: not-allowed;
+}
+/* With a link, the button is live: the ink on the page colour, like a chosen tab. */
+a.plan-button {
+  display: block;
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--background);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+a.plan-button:hover { border-color: var(--accent); background: var(--accent); }
+a.plan-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.footnote { margin: 0.5rem 0 0; text-align: center; }
+.plan-intro { margin: 2rem 0 0; font-weight: 700; }
+.plan-body > :first-child { margin-top: 1.5rem; }
+.plan-body ul { margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.plan-body li {
+  position: relative;
+  margin-bottom: 0.75rem;
+  padding-left: 2rem;
+}
+/* The tick, drawn from two borders so it needs no icon font or image. */
+.plan-body li::before {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 0.45em;
+  width: 0.5rem;
+  height: 0.9rem;
+  border: solid var(--accent);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* How to get the software (the get_software component): the same hidden
+   radio, label and panel as the pricing tabs. */
+.get-software { grid-column: 3 / 10; }
+.get-software {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem 0;
+  margin-top: 2rem;
+}
+/* In a section's single column (ten tracks wide) it is inset to columns 3 to 9:
+   one track in on the left, two on the right. */
+@media (min-width: 48rem) {
+  .column > .get-software {
+    --track: calc((100% - 9 * var(--gutter)) / 10);
+    margin-left: calc(var(--track) + var(--gutter));
+    margin-right: calc(2 * (var(--track) + var(--gutter)));
+  }
+}
+.platform { display: contents; }
+.platform-radio { position: absolute; opacity: 0; pointer-events: none; }
+.platform label {
+  order: 1;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--divider);
+  border-right-width: 0;
+  color: var(--muted);
+  font: 1.15rem var(--mono);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.platform:last-child label { border-right-width: 1px; }
+.platform-radio:checked + label {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--background);
+}
+.platform-radio:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.platform-panel { display: none; order: 2; flex: 0 0 100%; }
+.platform-radio:checked + label + .platform-panel { display: block; }
+.platform-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--divider);
+}
+.platform-head .platform-meta { margin: 0; }
+.platform-head + .platform-meta { margin-top: 0.75rem; }
+/* The architectures run on in the muted mono, set apart by dots, not boxes. */
+.platform-arch {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font: 1.1rem var(--mono);
+}
+.platform-arch li { margin: 0; }
+.platform-arch li + li::before { content: "\00b7"; margin: 0 0.6em; }
+.platform-meta { margin: 0.25rem 0 0; color: var(--muted); font: 1.1rem var(--mono); }
+.platform-panel .plan-button { display: block; width: 100%; margin-top: 1.5rem; }
+.platform-body > :first-child { margin-top: 2rem; }
+.platform-body ol { margin: 0; padding-left: 1.6rem; }
+
+/* Code blocks. A fenced block is highlighted by Zola (see [markdown.highlighting]
+   in config.toml), which writes the colours inline as light-dark() pairs; a
+   bare <pre> is plain. The scheme switch has to flip color-scheme on the
+   highlighted block, over its inline style, for the colours to follow it. */
+pre {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  border: 1px solid var(--divider);
+  font: 1.2rem/1.6 var(--mono);
+  tab-size: 4;
+}
+pre:not(.giallo) { color: var(--ink); }
+pre code { font: inherit; }
+.giallo-ln {
+  display: inline-block;
+  min-width: 2ch;
+  margin-right: 1.5ch;
+  text-align: right;
+  user-select: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:has(#scheme-switch:checked) pre.giallo { color-scheme: light !important; }
+}
+@media (prefers-color-scheme: light) {
+  :root:has(#scheme-switch:checked) pre.giallo { color-scheme: dark !important; }
+}
+
+/* Questions that open to their answers (the faq component): a native details
+   element, so it works without a script. */
+.faq { border-top: 1px solid var(--divider); }
+.faq-item { border-bottom: 1px solid var(--divider); }
+.faq-item summary {
+  position: relative;
+  padding: 1.25rem 2.5rem 1.25rem 0;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* The chevron, from two borders, turned over when open. */
+.faq-item summary::after {
+  content: "";
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-top: -0.5rem;
+  border: solid var(--muted);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  transition: transform 0.15s;
+}
+.faq-item[open] summary::after { margin-top: -0.2rem; transform: rotate(225deg); }
+.faq-answer { padding-bottom: 0.5rem; }
+.faq-answer > :first-child { margin-top: 0; }
+
+/* Question groups as tabs (a faq whose items have a group): the same hidden
+   radio, label and panel as the pricing tabs, with the labels left-aligned. */
+.faq-tabs { display: flex; flex-wrap: wrap; gap: 1.5rem 0; }
+.faq-tab { display: contents; }
+.faq-radio { position: absolute; opacity: 0; pointer-events: none; }
+.faq-tab label {
+  order: 1;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid var(--divider);
+  color: var(--muted);
+  font: 1.15rem var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.faq-tab:not(:first-child) label { margin-left: -1px; }
+.faq-radio:checked + label {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--background);
+}
+.faq-radio:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.faq-panel { display: none; order: 2; flex: 0 0 100%; }
+.faq-radio:checked + label + .faq-panel { display: block; }
+.faq-tabs, .faq + .faq-tabs { margin-top: 1.5rem; }
