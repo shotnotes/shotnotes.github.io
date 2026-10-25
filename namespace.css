@@ -1,0 +1,28 @@
+/* The namespace page (templates/namespace.html). A wider text column, room above
+   each heading and a short step below it, and a table of fields whose rows have
+   hairline borders. */
+.namespace .text { grid-column: 2 / 12; }
+.namespace h2 { margin-top: 3.5rem; }
+.namespace h2 + * { margin-top: 1rem; }
+.namespace pre { margin-bottom: 1.5rem; }
+.namespace code { font: 0.9em var(--mono); }
+
+.namespace table.fields {
+  width: 100%;
+  margin: 1rem 0 1.5rem;
+  border-collapse: collapse;
+}
+.namespace .fields th,
+.namespace .fields td {
+  padding: 0.6rem 2rem 0.6rem 0;
+  border-bottom: 1px solid var(--divider);
+  text-align: left;
+  vertical-align: top;
+}
+.namespace .fields th { color: var(--muted); font: 1.1rem var(--mono); font-weight: normal; }
+.namespace .fields th:nth-child(1) { width: 26%; }
+.namespace .fields th:nth-child(2) { width: 14%; }
+.namespace .fields td:nth-child(1),
+.namespace .fields td:nth-child(2) { white-space: nowrap; }
+/* A structure's own fields sit under it, set in from the left. */
+.namespace .fields tr.part td:first-child { padding-left: 1.5rem; }
