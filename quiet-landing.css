@@ -97,6 +97,8 @@ img { display: block; max-width: 100%; height: auto; }
 
 .bar .row { position: relative; }
 .bar nav a { text-decoration: none; }
+/* A target of at least 24 px high (WCAG 2.5.8), though its text is shorter. */
+.bar .inline a { display: inline-block; padding-block: 0.3rem; }
 .bar nav a:hover { color: var(--ink); }
 
 /* On a wide screen the items sit in a line, with a centre dot between them. */
@@ -481,6 +483,10 @@ a.plan-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 pre {
   margin: 1.5rem 0 0;
   padding: 1rem 1.25rem;
+  /* A long line wraps rather than scrolls: a scrolling block is out of reach of
+     the keyboard, and the page has to reflow at 320 px wide. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   overflow-x: auto;
   border: 1px solid var(--divider);
   font: 1.2rem/1.6 var(--mono);
@@ -558,3 +564,11 @@ pre code { font: inherit; }
 .faq-panel { display: none; order: 2; flex: 0 0 100%; }
 .faq-radio:checked + label + .faq-panel { display: block; }
 .faq-tabs, .faq + .faq-tabs { margin-top: 1.5rem; }
+
+/* For a reader who asks for less motion: no smooth scrolling to a section, and
+   the menu button and the question chevron change at once. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .menu summary span,
+  .faq-item summary::after { transition: none; }
+}

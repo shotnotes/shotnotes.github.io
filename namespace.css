@@ -5,7 +5,13 @@
 .namespace h2 { margin-top: 3.5rem; }
 .namespace h2 + * { margin-top: 1rem; }
 .namespace pre { margin-bottom: 1.5rem; }
-.namespace code { font: 0.9em var(--mono); }
+.namespace code { font: 0.9em var(--mono); overflow-wrap: anywhere; }
+
+/* A table is two-dimensional, so it may scroll when the window is narrower than
+   it is, but the scroll has to be reachable from the keyboard: the wrapper
+   takes focus (see the component). */
+.namespace .table-scroll { overflow-x: auto; }
+.namespace .table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .namespace table.fields {
   width: 100%;
