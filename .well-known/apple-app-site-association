@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["S4MQ5T23DX.app.shotnotes"],
+        "components": [
+          { "/": "/kit", "comment": "A kit item shared from the Shot Notes app" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.shotnotes",
+      "sha256_cert_fingerprints": [
+        "45:BE:ED:C8:6A:77:3D:5A:29:66:7F:6C:C7:D3:8B:EB:08:37:CB:72:FA:C6:9B:BE:69:8E:7E:2A:8D:CC:07:0F"
+      ]
+    }
+  }
+]
