@@ -487,13 +487,15 @@ a.plan-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .platform-panel .plan-button { display: block; width: 100%; margin-top: 1.5rem; }
 /* A store's badge, as its maker supplies it: never recoloured or stretched, and at
    least 40 px high. The gap keeps clear a quarter of its height around it. */
-.store { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+.store { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2.5rem; margin-top: 1.5rem; }
 .store-badge { display: block; line-height: 0; }
 .store-badge:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .store-badge img { display: block; height: 48px; width: auto; }
-.store-qr { display: block; width: 96px; height: 96px; }
+.store-code { margin: 0; text-align: center; }
+.store-qr { display: block; box-sizing: border-box; width: 96px; height: 96px; margin-inline: auto; border: 1px solid var(--divider); }
+.store-code figcaption { margin-top: 0.5rem; color: var(--muted); font: 1.1rem var(--mono); }
 .store-footnote { text-align: left; }
-@media (hover: none) and (pointer: coarse) { .store-qr { display: none; } }
+@media (hover: none) and (pointer: coarse) { .store-code { display: none; } }
 .platform-body > :first-child { margin-top: 2rem; }
 .platform-body ol { margin: 0; padding-left: 1.6rem; }
 
