@@ -13,6 +13,9 @@
         <loc>https://www.shotnotes.app/privacy/</loc>
     </url>
     <url>
+        <loc>https://www.shotnotes.app/sections/availability/</loc>
+    </url>
+    <url>
         <loc>https://www.shotnotes.app/sections/faq/</loc>
     </url>
     <url>
@@ -25,12 +28,12 @@
         <loc>https://www.shotnotes.app/sections/how/</loc>
     </url>
     <url>
-        <loc>https://www.shotnotes.app/sections/pricing/</loc>
-    </url>
-    <url>
         <loc>https://www.shotnotes.app/sections/privacy/</loc>
     </url>
     <url>
         <loc>https://www.shotnotes.app/sections/why/</loc>
+    </url>
+    <url>
+        <loc>https://www.shotnotes.app/trademarks/</loc>
     </url>
 </urlset>

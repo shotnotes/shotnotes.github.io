@@ -150,13 +150,21 @@ footer .row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 4rem;
   padding: 2rem 0 3rem;
   border-top: 1px solid var(--divider);
   color: var(--muted);
   font-size: 1.2rem;
 }
 footer .row p { margin: 0; }
+/* The notice and the links are one block, with the links on a line of their own. It
+   takes the room the switch leaves, and wraps, so the switch keeps a clear space
+   around it at any width. */
+footer .legal { flex: 1 1 0; min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 30rem) { footer .row { gap: 2rem; } }
+footer .footer-links { margin-top: 0.5rem; }
+footer .footer-links span + span::before { content: "\00b7"; margin: 0 0.6em; }
+footer .scheme-switch { flex: none; }
 
 /* The light/dark switch: a hidden checkbox and a label drawn as an icon, the
    moon on a light page (to go dark) and the sun on a dark one. */
@@ -209,10 +217,14 @@ h1 {
   font-size: clamp(3rem, 9vw, 6.5rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
 }
 
 .lead { margin: 0 0 1.5rem; font-size: 1.85rem; }
 
+/* Wrap a name that must keep its own capitals, such as iPhone, in a line that is
+   otherwise set in capitals: <span class="keep-case">iPhone</span>. */
+.keep-case { text-transform: none; }
 h2 {
   margin: 0 0 1rem;
   color: var(--accent);
@@ -473,6 +485,15 @@ a.plan-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 
 .platform-arch li + li::before { content: "\00b7"; margin: 0 0.6em; }
 .platform-meta { margin: 0.25rem 0 0; color: var(--muted); font: 1.1rem var(--mono); }
 .platform-panel .plan-button { display: block; width: 100%; margin-top: 1.5rem; }
+/* A store's badge, as its maker supplies it: never recoloured or stretched, and at
+   least 40 px high. The gap keeps clear a quarter of its height around it. */
+.store { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+.store-badge { display: block; line-height: 0; }
+.store-badge:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.store-badge img { display: block; height: 48px; width: auto; }
+.store-qr { display: block; width: 96px; height: 96px; }
+.store-footnote { text-align: left; }
+@media (hover: none) and (pointer: coarse) { .store-qr { display: none; } }
 .platform-body > :first-child { margin-top: 2rem; }
 .platform-body ol { margin: 0; padding-left: 1.6rem; }
 
